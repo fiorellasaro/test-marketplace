@@ -387,6 +387,9 @@ export async function getNFTDetail(
     TOKEN_2022_PROGRAM_ID
   );
   let image_url = "";
+  let collection = "";
+  let designer = "";
+  let year = "";
   console.log(metadata);
   if (metadata?.uri.includes("jpeg" || "png" || "jpg"))
     image_url = metadata?.uri || "";
@@ -395,6 +398,9 @@ export async function getNFTDetail(
     if (response.ok) {
       const res_data = await response.json();
       image_url = res_data.image;
+      collection = res_data.collection;
+      designer = res_data.designer;
+      year = res_data.year;
       console.log(res_data);
     }
   }
@@ -407,6 +413,9 @@ export async function getNFTDetail(
     seller: seller,
     price: price,
     listing: listing,
+    collection: collection,
+    designer,
+    year,
   };
   return NFTItem;
 }

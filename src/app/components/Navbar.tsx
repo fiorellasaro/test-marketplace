@@ -4,12 +4,12 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useTheme } from "../context/ThemeContext";
 import axios from "axios";
-import Image from "next/image";
 import { Sun, Moon } from "lucide-react";
-import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import dynamic from "next/dynamic";
+import { useSession } from "next-auth/react";
+import SignInButton from "./SignInButton";
+import SignOutButton from "./SignOutButton";
 
-// Dynamically load WalletMultiButton to ensure it is only rendered on the client side
 const DynamicWalletMultiButton = dynamic(
   () =>
     import("@solana/wallet-adapter-react-ui").then(
@@ -21,6 +21,7 @@ const DynamicWalletMultiButton = dynamic(
 const NavBar = () => {
   const { theme, toggleTheme } = useTheme();
   const [username, setUsername] = useState<string | null>(null);
+  const { data: session } = useSession();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -48,13 +49,6 @@ const NavBar = () => {
     <nav className="bg-black p-4 fixed w-full top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
         <Link href="/" className="flex items-center space-x-2">
-          {/* <Image
-            src="/assets/BujeyBrandLogo03.png"
-            alt="Bujey Brand Logo"
-            width={40}
-            height={40}
-            className="w-10 h-10"
-          /> */}
           <div className="text-white text-xl font-bold">Defy</div>
         </Link>
         <div className="space-x-4 flex items-center">
@@ -84,6 +78,7 @@ const NavBar = () => {
             )}
           </button>
           <DynamicWalletMultiButton />
+          {session ? <SignOutButton /> : <SignInButton />}
         </div>
       </div>
       <div className="container mx-auto flex justify-between items-center sm:hidden mt-2">

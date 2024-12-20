@@ -1,15 +1,19 @@
-import axios from 'axios';
+import axios from "axios";
+import { signIn, signOut } from "next-auth/react";
 
 export const isAuthenticated = async (token: string | null) => {
   if (!token) return false;
   try {
-    const response = await axios.get('http://localhost:4000/api/userinfo', {
+    const response = await axios.get("http://localhost:4000/api/userinfo", {
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     });
     return response.status === 200;
   } catch (error) {
     return false;
   }
 };
+
+export const handleSignIn = () => signIn("google");
+export const handleSignOut = () => signOut();
